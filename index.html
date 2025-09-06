@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For My Langga ❤️</title>
+  <title>For You ❤️</title>
   <style>
     body {
       margin: 0;
@@ -11,151 +11,122 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       overflow: hidden;
-      color: white;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 3em;
-      text-shadow: 0 0 10px #fff, 0 0 20px #ff6b81;
-      animation: glow 2s ease-in-out infinite alternate;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #fff, 0 0 20px #ff6b81; }
-      to { text-shadow: 0 0 20px #fff, 0 0 40px #ff4757; }
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 1.2em;
-      border: none;
-      border-radius: 25px;
-      background: #ff4757;
-      color: white;
+      font-family: 'Arial', sans-serif;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
+      flex-direction: column;
     }
-
-    button:hover {
-      transform: scale(1.1);
-      background: #e84118;
+    h1 {
+      color: white;
+      font-size: 2.2em;
+      text-align: center;
+      animation: glow 2s infinite alternate;
+      margin-bottom: 30px;
     }
-
-    #message {
-      margin-top: 20px;
-      font-size: 1.4em;
-      font-weight: bold;
-      display: none;
-      white-space: pre-line;
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff6b81, 0 0 20px #ff6b81; }
+      to { text-shadow: 0 0 20px #ff4757, 0 0 40px #ff4757; }
     }
-
     .heart {
       position: absolute;
-      color: red;
+      color: #ff6b81;
       font-size: 20px;
-      animation: float 6s linear infinite;
-      opacity: 0.8;
+      animation: floatUp 6s linear forwards;
+      pointer-events: none;
     }
-
-    @keyframes float {
+    @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
+      100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
     }
-
-    /* Hide YouTube iframe */
-    #ytplayer {
-      display: none;
+    .pop-heart {
+      position: absolute;
+      color: #ff4757;
+      font-size: 30px;
+      animation: pop 1s ease forwards;
+      pointer-events: none;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+    /* Button style */
+    button {
+      background: #ff4757;
+      border: none;
+      padding: 12px 25px;
+      color: white;
+      font-size: 1.1em;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #ff6b81;
+      transform: scale(1.05);
+    }
+    /* Hide iframe */
+    #music {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border: none;
+      visibility: hidden;
     }
   </style>
 </head>
 <body>
-  <h1>Langga ❤️</h1>
-  <button onclick="showMessage()">Click me, Langga 💌</button>
-  <div id="message"></div>
+  <h1>
+    Thank you for being patient ❤️<br>
+    for supporting me always 💕<br>
+    and for cheering me up when I'm down 🥺<br>
+    I love you, Langga! 💖
+  </h1>
 
-  <!-- Hidden YouTube player -->
-  <iframe id="ytplayer" type="text/html" width="0" height="0"
-    src="https://www.youtube.com/embed/TjEbuWP3hjg?enablejsapi=1&controls=0"
-    frameborder="0"></iframe>
+  <!-- Custom Play Button -->
+  <button onclick="playMusic()">Play Music 🎶</button>
+
+  <!-- Hidden YouTube iframe -->
+  <iframe id="music" src="https://www.youtube.com/embed/qFlbtmB0Dk0?rel=0&enablejsapi=1" allow="autoplay; encrypted-media"></iframe>
 
   <script>
-    const messageText = "Thank you, Langga, for your patience in waiting for me while I’m busy with my exams. 💙 I’m so grateful for your constant support and for always cheering me up whenever I feel down about school. 🌹 Your love means everything to me, and I couldn’t do this without you. ❤️";
-
-    let player;
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('ytplayer', {
-        events: {
-          'onReady': onPlayerReady
-        }
-      });
-    }
-
-    function onPlayerReady(event) {
-      // do nothing until button is clicked
-    }
-
-    function showMessage() {
-      const messageDiv = document.getElementById("message");
-      messageDiv.style.display = "block";
-      messageDiv.innerHTML = "";
-
-      let i = 0;
-      function typingEffect() {
-        if (i < messageText.length) {
-          messageDiv.innerHTML += messageText.charAt(i);
-          i++;
-          setTimeout(typingEffect, 50);
-        }
-      }
-      typingEffect();
-
-      // Burst of hearts
-      for (let j = 0; j < 20; j++) {
-        createHeart(true);
-      }
-
-      // Play music softly and fade out after 3 minutes
-      if (player && player.playVideo) {
-        player.setVolume(20); // start soft
-        player.playVideo();
-
-        setTimeout(() => {
-          let fade = setInterval(() => {
-            let currentVolume = player.getVolume();
-            if (currentVolume > 0) {
-              player.setVolume(currentVolume - 1);
-            } else {
-              clearInterval(fade);
-            }
-          }, 300); // fade out smoothly
-        }, 180000); // start fade after 3 minutes
-      }
-    }
-
-    function createHeart(burst = false) {
+    // Floating background hearts
+    function createHeart() {
       const heart = document.createElement("div");
-      heart.classList.add("heart");
-      heart.innerHTML = "❤️";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.fontSize = Math.random() * 20 + 15 + "px";
-      heart.style.animationDuration = burst ? (2 + Math.random() * 2) + "s" : (4 + Math.random() * 3) + "s";
+      heart.className = "heart";
+      heart.innerText = "❤";
       document.body.appendChild(heart);
 
-      setTimeout(() => {
-        heart.remove();
-      }, 6000);
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + "px";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+
+      setTimeout(() => heart.remove(), 6000);
     }
+    setInterval(createHeart, 500);
 
-    setInterval(createHeart, 700);
+    // Pop heart when clicked
+    document.addEventListener("click", (e) => {
+      const heart = document.createElement("div");
+      heart.className = "pop-heart";
+      heart.innerText = "❤";
+      document.body.appendChild(heart);
+
+      heart.style.left = e.pageX - 10 + "px";
+      heart.style.top = e.pageY - 10 + "px";
+
+      setTimeout(() => heart.remove(), 1000);
+    });
+
+    // Music play function
+    function playMusic() {
+      const iframe = document.getElementById("music");
+      iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+    }
   </script>
-
-  <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
+
+    
