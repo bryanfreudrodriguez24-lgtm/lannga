@@ -3,93 +3,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For You ❤️</title>
+  <title>For You 💖</title>
+  <!-- Romantic handwritten Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      background: linear-gradient(120deg, #ffb6b9 0%, #fae3d9 40%, #bbded6 80%, #8ac6d1 100%);
+      font-family: 'Quicksand', Arial, sans-serif;
+      transition: background 3s ease;
+      position: relative;
       overflow: hidden;
-      font-family: 'Arial', sans-serif;
-      transition: background 0.3s;
+      animation: bgShift 18s ease-in-out infinite alternate;
     }
-    h1 {
-      color: white;
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    h1, .typewriter {
+      color: #fff;
+      font-family: 'Pacifico', cursive;
       font-size: 2.5em;
       text-align: center;
-      animation: glow 2s infinite alternate;
-      opacity: 0;
-      transition: opacity 2s ease-in;
-    }
-    h1.show {
-      opacity: 1;
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #ff6b81, 0 0 20px #ff6b81; }
-      to { text-shadow: 0 0 20px #ff4757, 0 0 40px #ff4757; }
+      text-shadow: 0 0 12px #ffb6b9, 0 0 24px #fff5ee;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+      filter: drop-shadow(0 1px 2px #e57373);
+      min-height: 120px;
     }
     .heart {
       position: absolute;
-      color: #ff6b81;
-      font-size: 20px;
-      animation: floatUp 6s linear infinite;
+      pointer-events: none;
+      user-select: none;
+      animation: floatUp 6s linear forwards;
+      will-change: transform, opacity;
     }
     @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+      80% { opacity: 0.8; }
+      100% { transform: translateY(-800px) scale(1.6); opacity: 0; }
     }
     .confetti {
       position: absolute;
-      width: 5px;
-      height: 5px;
-      background-color: red;
+      border-radius: 50%;
       z-index: 9999;
+      pointer-events: none;
+      opacity: 0.8;
+      animation: confettiFall 4s linear forwards;
     }
-    #surpriseBtn {
-      margin-top: 15px;
-      padding: 8px 15px;
-      border-radius: 10px;
+    @keyframes confettiFall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    #surpriseBtn, #extraBtn {
+      margin: 10px 10px 0 10px;
+      padding: 10px 20px;
+      border-radius: 24px;
       border: none;
       cursor: pointer;
-      background-color: #ff6b81;
+      background: linear-gradient(120deg, #ff6b81 60%, #ffb6b9 100%);
       color: white;
-      font-size: 1em;
+      font-size: 1.1em;
+      font-family: 'Quicksand', Arial, sans-serif;
+      font-weight: 700;
+      box-shadow: 0 3px 8px #e5737380;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-    #extraMessage {
+    #surpriseBtn:hover, #extraBtn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 6px 16px #ffb6b9cc;
+      background: linear-gradient(120deg, #ffb6b9 60%, #ff6b81 100%);
+    }
+    #extraMessage, #moreRomance {
       display: none;
-      color: white;
+      color: #fff;
+      font-size: 1.6em;
+      margin-top: 16px;
+      text-shadow: 0 0 10px #fae3d9, 0 0 16px #bbded6;
+      transition: opacity 0.7s;
+      font-family: 'Pacifico', cursive;
+    }
+    .sparkle {
+      position: absolute;
+      pointer-events: none;
       font-size: 1.5em;
-      margin-top: 10px;
+      opacity: 0.85;
+      animation: sparkleAnim 1.1s linear forwards;
+    }
+    @keyframes sparkleAnim {
+      0% { opacity: 1; transform: scale(0.7); }
+      80% { opacity: 1; }
+      100% { opacity: 0; transform: scale(1.4) rotate(100deg); }
     }
   </style>
 </head>
 <body>
-
-  <!-- Love message -->
-  <h1 id="loveMessage">
-    Thank you for being patient ❤️<br>
-    Thank you for supporting me while I’m busy 📚<br>
-    Thank you for cheering me up when I’m down 💕<br>
-    I love you, Langga! 💖
-  </h1>
-
-  <button id="surpriseBtn">Click me ❤️</button>
-  <div id="extraMessage">You're my favorite human! 💕</div>
-
+  <h1 class="typewriter" id="loveMessage"></h1>
+  <button id="surpriseBtn">Show me more love ❤️</button>
+  <button id="extraBtn">One More Surprise 💌</button>
+  <div id="extraMessage">You're my forever and always 💞</div>
+  <div id="moreRomance">You make my heart skip a beat! 💓💓💓</div>
   <script>
-    // Floating hearts
-    function createHeart() {
+    // Romantic multi-line message
+    const lines = [
+      "Thank you for being the light in my life 💖",
+      "Every moment with you feels like magic ✨",
+      "You are my dream come true 💕",
+      "Forever yours, Langga! 💘"
+    ];
+    const message = document.getElementById("loveMessage");
+    let line = 0, char = 0;
+    function typeWriterRomantic() {
+      if (line < lines.length) {
+        if (char < lines[line].length) {
+          message.innerHTML += lines[line][char];
+          char++;
+          setTimeout(typeWriterRomantic, 65 + Math.random()*30);
+        } else {
+          message.innerHTML += '<br>';
+          line++;
+          char = 0;
+          setTimeout(typeWriterRomantic, 650);
+        }
+      }
+    }
+
+    // Multi-colored romantic hearts
+    const heartColors = ['#ff6b81','#ffb6b9','#bbded6','#8ac6d1','#f6abb6','#f7cac9','#b5ead7','#ffdac1'];
+    const heartChars = ['💖','💙','💚','💛','💜','❤️','🧡','💕','💞','💓','💗','💘'];
+    function createHeart(x, y) {
       const heart = document.createElement("div");
       heart.className = "heart";
-      heart.innerText = "❤";
+      heart.innerText = heartChars[Math.floor(Math.random()*heartChars.length)];
+      heart.style.left = (x !== undefined ? x : Math.random()*window.innerWidth) + "px";
+      heart.style.top = (y !== undefined ? y : window.innerHeight + 40) + "px";
+      heart.style.fontSize = (Math.random()*20 + 22) + "px";
+      heart.style.color = heartColors[Math.floor(Math.random()*heartColors.length)];
+      heart.style.textShadow = "0 0 12px #fff5ee, 0 0 16px #ffb6b9";
       document.body.appendChild(heart);
-      heart.style.left = Math.random() * window.innerWidth + "px";
-      heart.style.top = window.innerHeight + "px";
-      heart.style.fontSize = Math.random() * 20 + 15 + "px";
       setTimeout(() => heart.remove(), 6000);
     }
 
@@ -98,47 +154,65 @@
       const confetti = document.createElement("div");
       confetti.className = "confetti";
       confetti.style.left = Math.random() * window.innerWidth + "px";
-      confetti.style.backgroundColor = `hsl(${Math.random()*360}, 70%, 60%)`;
-      confetti.style.width = confetti.style.height = Math.random()*10 + 5 + "px";
+      confetti.style.top = "-12px";
+      confetti.style.backgroundColor = heartColors[Math.floor(Math.random()*heartColors.length)];
+      confetti.style.width = confetti.style.height = Math.random()*10 + 6 + "px";
       document.body.appendChild(confetti);
-      confetti.animate([
-        { transform: `translateY(0px)` },
-        { transform: `translateY(${window.innerHeight}px)` }
-      ], { duration: 4000, easing: 'linear' });
       setTimeout(() => confetti.remove(), 4000);
     }
 
-    // Typewriter effect
-    const message = document.getElementById("loveMessage");
-    const text = message.innerHTML;
-    message.innerHTML = "";
-    let i = 0;
-    function typeWriter() {
-      message.classList.add("show");
-      if (i < text.length) {
-        message.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 50);
-      }
+    // Sparkle effect
+    function createSparkle(x, y) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      sparkle.innerText = '✦';
+      sparkle.style.left = x + 'px';
+      sparkle.style.top = y + 'px';
+      sparkle.style.color = heartColors[Math.floor(Math.random()*heartColors.length)];
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 1000);
     }
 
-    // Start animations on page load
-    window.addEventListener("load", () => {
-      typeWriter();
-      setInterval(createHeart, 500);
-      setInterval(createConfetti, 300);
-    });
+    // Floating hearts interval
+    setInterval(createHeart, 570);
+    setInterval(createConfetti, 260);
 
-    // Extra message button
+    // Typewriter animation on load
+    window.addEventListener("load", typeWriterRomantic);
+
+    // Surprise button reveals extra message and burst of hearts
     document.getElementById("surpriseBtn").addEventListener("click", () => {
       document.getElementById("extraMessage").style.display = "block";
+      for(let i=0;i<16;i++) {
+        setTimeout(()=>createHeart(window.innerWidth/2+Math.random()*100-50,window.innerHeight/2+Math.random()*90-45),i*70);
+      }
     });
 
-    // Interactive background
-    document.addEventListener("mousemove", (e) => {
-      document.body.style.background = `radial-gradient(circle at ${e.clientX}px ${e.clientY}px, #ff9a9e, #fad0c4)`;
+    // Extra button for more romance (show sparkles, extra message, more hearts)
+    document.getElementById("extraBtn").addEventListener("click", () => {
+      document.getElementById("moreRomance").style.display = "block";
+      for(let i=0;i<20;i++) {
+        setTimeout(()=>{
+          createHeart(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
+          createSparkle(Math.random()*window.innerWidth, Math.random()*window.innerHeight/2);
+        },i*60);
+      }
     });
+
+    // Clicking anywhere spawns a burst of hearts and sparkles
+    document.addEventListener("click", (e) => {
+      for(let i=0;i<8;i++) {
+        setTimeout(()=>createHeart(e.clientX+Math.random()*50-25,e.clientY+Math.random()*50-25),i*36);
+        if(i%2===0) setTimeout(()=>createSparkle(e.clientX+Math.random()*60-30,e.clientY+Math.random()*60-30),i*36);
+      }
+    });
+
+    // Softly animate the background colors
+    let hue = 0;
+    setInterval(()=>{
+      hue = (hue+0.3)%360;
+      document.body.style.background = `linear-gradient(120deg, hsl(${hue}, 98%, 78%) 0%, #fae3d9 40%, #bbded6 80%, hsl(${(hue+80)%360}, 80%, 72%) 100%)`;
+    }, 90);
   </script>
 </body>
 </html>
-
