@@ -1,17 +1,143 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Your Title</title>
-    <style>
-        /* Add your styles here */
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      transition: background 0.3s;
+    }
+    h1 {
+      color: white;
+      font-size: 2.5em;
+      text-align: center;
+      animation: glow 2s infinite alternate;
+      opacity: 0;
+      transition: opacity 2s ease-in;
+    }
+    h1.show {
+      opacity: 1;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff6b81, 0 0 20px #ff6b81; }
+      to { text-shadow: 0 0 20px #ff4757, 0 0 40px #ff4757; }
+    }
+    .heart {
+      position: absolute;
+      color: #ff6b81;
+      font-size: 20px;
+      animation: floatUp 6s linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+    }
+    .confetti {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background-color: red;
+      z-index: 9999;
+    }
+    #surpriseBtn {
+      margin-top: 15px;
+      padding: 8px 15px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background-color: #ff6b81;
+      color: white;
+      font-size: 1em;
+    }
+    #extraMessage {
+      display: none;
+      color: white;
+      font-size: 1.5em;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="love-message">Love Message Here</div>
-    <div class="hearts">❤️❤️❤️</div>
-    <div class="confetti">🎉🎉🎉</div>
-    <button class="surprise-button">Surprise Me!</button>
-    <script>
-        // Interactive background script here
-    </script>
+
+  <!-- Hidden love message -->
+  <h1 id="loveMessage">
+    Thank you for being patient ❤️<br>
+    Thank you for supporting me while I’m busy 📚<br>
+    Thank you for cheering me up when I’m down 💕<br>
+    I love you, Langga! 💖
+  </h1>
+
+  <button id="surpriseBtn">Click me ❤️</button>
+  <div id="extraMessage">You're my favorite human! 💕</div>
+
+  <script>
+    // Floating hearts
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = "❤";
+      document.body.appendChild(heart);
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.top = window.innerHeight + "px";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    // Confetti
+    function createConfetti() {
+      const confetti = document.createElement("div");
+      confetti.className = "confetti";
+      confetti.style.left = Math.random() * window.innerWidth + "px";
+      confetti.style.backgroundColor = `hsl(${Math.random()*360}, 70%, 60%)`;
+      confetti.style.width = confetti.style.height = Math.random()*10 + 5 + "px";
+      document.body.appendChild(confetti);
+      confetti.animate([
+        { transform: `translateY(0px)` },
+        { transform: `translateY(${window.innerHeight}px)` }
+      ], { duration: 4000, easing: 'linear' });
+      setTimeout(() => confetti.remove(), 4000);
+    }
+
+    // Typewriter effect
+    const message = document.getElementById("loveMessage");
+    const text = message.innerHTML;
+    message.innerHTML = "";
+    let i = 0;
+    function typeWriter() {
+      message.classList.add("show");
+      if (i < text.length) {
+        message.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50);
+      }
+    }
+
+    // Start animation on page load
+    window.addEventListener("load", () => {
+      typeWriter();
+      setInterval(createHeart, 500);
+      setInterval(createConfetti, 300);
+    });
+
+    // Extra message button
+    document.getElementById("surpriseBtn").addEventListener("click", () => {
+      document.getElementById("extraMessage").style.display = "block";
+    });
+
+    // Interactive background
+    document.addEventListener("mousemove", (e) => {
+      document.body.style.background = `radial-gradient(circle at ${e.clientX}px ${e.clientY}px, #ff9a9e, #fad0c4)`;
+    });
+  </script>
 </body>
 </html>
