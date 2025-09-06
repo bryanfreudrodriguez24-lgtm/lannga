@@ -33,9 +33,8 @@
     }
     .heart {
       position: absolute;
-      color: #ff6b81;
       font-size: 20px;
-      animation: floatUp 6s linear infinite;
+      animation: floatUp 6s linear forwards;
     }
     @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -83,6 +82,8 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     var player;
+    var heartsInterval = null; // track interval
+
     function onYouTubeIframeAPIReady() {
       player = new YT.Player('ytplayer', {
         events: {
@@ -95,9 +96,22 @@
       if (event.data === YT.PlayerState.PLAYING) {
         // Fade-in message
         document.getElementById("loveMessage").classList.add("show");
-        // Start hearts floating
-        setInterval(createHeart, 500);
+        // Start hearts floating only if not already started
+        if (!heartsInterval) {
+          heartsInterval = setInterval(createHeart, 500);
+        }
+      } else {
+        // Stop hearts when paused or ended
+        if (heartsInterval) {
+          clearInterval(heartsInterval);
+          heartsInterval = null;
+        }
       }
+    }
+
+    // Generate a random color in hex
+    function getRandomColor() {
+      return '#' + Math.floor(Math.random()*16777215).toString(16);
     }
 
     // Floating heart generator
@@ -105,14 +119,15 @@
       const heart = document.createElement("div");
       heart.className = "heart";
       heart.innerText = "❤";
-      document.body.appendChild(heart);
-
+      heart.style.color = getRandomColor(); // random color
       heart.style.left = Math.random() * window.innerWidth + "px";
       heart.style.top = window.innerHeight + "px";
       heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      document.body.appendChild(heart);
 
       setTimeout(() => heart.remove(), 6000);
     }
   </script>
 </body>
 </html>
+
