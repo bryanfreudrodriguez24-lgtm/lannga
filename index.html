@@ -15,130 +15,92 @@
       background: linear-gradient(135deg, #ff9a9e, #fad0c4);
       overflow: hidden;
       font-family: 'Arial', sans-serif;
+      cursor: pointer;
       transition: background 0.3s;
     }
     h1 {
       color: white;
-      font-size: 2.5em;
+      font-size: 2em;
       text-align: center;
-      animation: glow 2s infinite alternate;
-      opacity: 0;
-      transition: opacity 2s ease-in;
-    }
-    h1.show {
-      opacity: 1;
-    }
-    @keyframes glow {
-      from { text-shadow: 0 0 10px #ff6b81, 0 0 20px #ff6b81; }
-      to { text-shadow: 0 0 20px #ff4757, 0 0 40px #ff4757; }
+      max-width: 80%;
+      z-index: 1;
     }
     .heart {
       position: absolute;
       color: #ff6b81;
       font-size: 20px;
-      animation: floatUp 6s linear infinite;
+      animation: floatUp 3s linear forwards;
+      pointer-events: none;
     }
     @keyframes floatUp {
       0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
+      100% { transform: translateY(-500px) scale(2); opacity: 0; }
     }
-    .confetti {
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background-color: red;
-      z-index: 9999;
-    }
-    #surpriseBtn {
-      margin-top: 15px;
-      padding: 8px 15px;
-      border-radius: 10px;
+    #revealBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border-radius: 12px;
       border: none;
       cursor: pointer;
       background-color: #ff6b81;
       color: white;
       font-size: 1em;
-    }
-    #extraMessage {
-      display: none;
-      color: white;
-      font-size: 1.5em;
-      margin-top: 10px;
+      z-index: 2;
     }
   </style>
 </head>
 <body>
 
-  <!-- Love message -->
   <h1 id="loveMessage">
-    Thank you for being patient ❤️<br>
-    Thank you for supporting me while I’m busy 📚<br>
-    Thank you for cheering me up when I’m down 💕<br>
-    I love you, Langga! 💖
+    <!-- initially hidden characters will be revealed -->
   </h1>
 
-  <button id="surpriseBtn">Click me ❤️</button>
-  <div id="extraMessage">You're my favorite human! 💕</div>
+  <button id="revealBtn">Reveal My Love ❤️</button>
 
   <script>
+    // Full message
+    const fullMessage = "Thank you for being patient ❤️ Thank you for supporting me while I’m busy 📚 Thank you for cheering me up when I’m down 💕 I love you, Langga! 💖";
+    let revealedText = "";
+    let index = 0;
+
+    const messageElement = document.getElementById("loveMessage");
+    const button = document.getElementById("revealBtn");
+
     // Floating hearts
-    function createHeart() {
+    function createHeart(x, y) {
       const heart = document.createElement("div");
       heart.className = "heart";
       heart.innerText = "❤";
       document.body.appendChild(heart);
-      heart.style.left = Math.random() * window.innerWidth + "px";
-      heart.style.top = window.innerHeight + "px";
-      heart.style.fontSize = Math.random() * 20 + 15 + "px";
-      setTimeout(() => heart.remove(), 6000);
+      heart.style.left = x - 10 + "px";
+      heart.style.top = y - 10 + "px";
+      heart.style.fontSize = Math.random() * 25 + 15 + "px";
+      setTimeout(() => heart.remove(), 3000);
     }
 
-    // Confetti
-    function createConfetti() {
-      const confetti = document.createElement("div");
-      confetti.className = "confetti";
-      confetti.style.left = Math.random() * window.innerWidth + "px";
-      confetti.style.backgroundColor = `hsl(${Math.random()*360}, 70%, 60%)`;
-      confetti.style.width = confetti.style.height = Math.random()*10 + 5 + "px";
-      document.body.appendChild(confetti);
-      confetti.animate([
-        { transform: `translateY(0px)` },
-        { transform: `translateY(${window.innerHeight}px)` }
-      ], { duration: 4000, easing: 'linear' });
-      setTimeout(() => confetti.remove(), 4000);
-    }
+    // Reveal function
+    button.addEventListener("click", (e) => {
+      if(index < fullMessage.length) {
+        revealedText += fullMessage.charAt(index);
+        messageElement.innerText = revealedText;
+        index++;
 
-    // Typewriter effect
-    const message = document.getElementById("loveMessage");
-    const text = message.innerHTML;
-    message.innerHTML = "";
-    let i = 0;
-    function typeWriter() {
-      message.classList.add("show");
-      if (i < text.length) {
-        message.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 50);
+        // Spawn multiple hearts on click
+        for(let i=0; i<5; i++){
+          const offsetX = (Math.random() - 0.5) * 50;
+          const offsetY = (Math.random() - 0.5) * 50;
+          createHeart(e.clientX + offsetX, e.clientY + offsetY);
+        }
       }
-    }
-
-    // Start animations on page load
-    window.addEventListener("load", () => {
-      typeWriter();
-      setInterval(createHeart, 500);
-      setInterval(createConfetti, 300);
     });
 
-    // Extra message button
-    document.getElementById("surpriseBtn").addEventListener("click", () => {
-      document.getElementById("extraMessage").style.display = "block";
-    });
-
-    // Interactive background
-    document.addEventListener("mousemove", (e) => {
-      document.body.style.background = `radial-gradient(circle at ${e.clientX}px ${e.clientY}px, #ff9a9e, #fad0c4)`;
+    // Optional: click anywhere on body to reveal and spawn hearts
+    document.body.addEventListener("click", (e) => {
+      if(e.target !== button){
+        button.click(); // trigger the same reveal
+      }
     });
   </script>
+
 </body>
 </html>
-
