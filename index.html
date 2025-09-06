@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -40,16 +40,19 @@
       0% { transform: translateY(0) scale(1); opacity: 1; }
       100% { transform: translateY(-800px) scale(1.5); opacity: 0; }
     }
-    .music-box {
+    .fade-in-btn {
       margin-top: 20px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 10px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      border: none;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      text-align: center;
+      background-color: #ff6b81;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    iframe {
-      border-radius: 12px;
+    .fade-in-btn:hover {
+      background-color: #ff4757;
     }
   </style>
 </head>
@@ -62,52 +65,11 @@
     I love you, Langga! 💖
   </h1>
 
-  <!-- Music Player -->
-  <div class="music-box">
-    <p style="color:white; font-size:1.2em;">Play our song 🎶</p>
-    <iframe id="ytplayer" width="250" height="140" 
-      src="https://www.youtube.com/embed/Q3dHm18gZdU?enablejsapi=1" 
-      title="Tadhana - Up Dharma Down"
-      frameborder="0" 
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-      allowfullscreen>
-    </iframe>
-  </div>
+  <!-- Button to trigger hearts -->
+  <button class="fade-in-btn" id="startBtn">Show Love 💌</button>
 
   <script>
-    // Load YouTube API for play detection
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    var player;
-    var heartsInterval = null; // track interval
-
-    function onYouTubeIframeAPIReady() {
-      player = new YT.Player('ytplayer', {
-        events: {
-          'onStateChange': onPlayerStateChange
-        }
-      });
-    }
-
-    function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.PLAYING) {
-        // Fade-in message
-        document.getElementById("loveMessage").classList.add("show");
-        // Start hearts floating only if not already started
-        if (!heartsInterval) {
-          heartsInterval = setInterval(createHeart, 500);
-        }
-      } else {
-        // Stop hearts when paused or ended
-        if (heartsInterval) {
-          clearInterval(heartsInterval);
-          heartsInterval = null;
-        }
-      }
-    }
+    var heartsInterval = null;
 
     // Generate a random color in hex
     function getRandomColor() {
@@ -127,7 +89,15 @@
 
       setTimeout(() => heart.remove(), 6000);
     }
+
+    // Button click triggers hearts and message
+    document.getElementById("startBtn").addEventListener("click", function() {
+      document.getElementById("loveMessage").classList.add("show");
+      if (!heartsInterval) {
+        heartsInterval = setInterval(createHeart, 500);
+      }
+      this.style.display = "none"; // hide button after click
+    });
   </script>
 </body>
 </html>
-
