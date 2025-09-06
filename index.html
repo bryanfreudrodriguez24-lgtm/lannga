@@ -213,8 +213,6 @@
   </div>
   <div id="extraMessage">You're my favorite human! 💕</div>
   <div class="footer">Made with ❤️</div>
-  <!-- Optional: Romantic gentle sound effect, can be muted or removed -->
-  <audio id="loveSound" src="https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa5c2a.mp3" preload="auto"></audio>
   <script>
     // Heart colors and emojis for more romantic effect
     const heartEmojis = [
@@ -300,43 +298,25 @@
       setInterval(createConfetti, 300);
     });
 
+    // Function to pop a lot of hearts and confetti on every button click
+    function popLotsOfHeartsAndConfetti() {
+      for (let j = 0; j < 32; j++) setTimeout(() => createHeart("pulse"), j*15);
+      for (let k = 0; k < 42; k++) setTimeout(createConfetti, k*10);
+      // glowing pulse
+      message.style.boxShadow = "0 0 70px 35px #ffb3c6cc";
+      setTimeout(() => { message.style.boxShadow = ""; }, 900);
+    }
+
     // Extra message button (Show More Love)
     document.getElementById("surpriseBtn").addEventListener("click", () => {
       document.getElementById("extraMessage").style.display = "block";
-      for (let j = 0; j < 22; j++) setTimeout(() => createHeart("pulse"), j*32);
-      for (let k = 0; k < 32; k++) setTimeout(createConfetti, k*17);
-      // glowing pulse
-      message.style.boxShadow = "0 0 70px 35px #ffb3c6cc";
-      setTimeout(() => { message.style.boxShadow = ""; }, 1400);
-      // soft sound
-      playLoveSound();
+      popLotsOfHeartsAndConfetti();
     });
 
-    // "Love Storm" Button: huge burst!
+    // "Love Storm" Button: huge burst every time!
     document.getElementById("stormBtn").addEventListener("click", () => {
-      for (let j = 0; j < 48; j++) setTimeout(() => createHeart("spin"), j*17);
-      for (let k = 0; k < 90; k++) setTimeout(createConfetti, k*9);
-      // rainbow glow effect on message
-      message.style.transition = "filter 0.7s, box-shadow 0.7s";
-      message.style.filter = "brightness(1.5) drop-shadow(0 0 22px #fff0f5) drop-shadow(0 0 35px #ffb3c6)";
-      message.style.boxShadow = "0 0 150px 60px #e1eaffcc, 0 0 44px #ffb8e3";
-      setTimeout(() => {
-        message.style.filter = "";
-        message.style.boxShadow = "";
-      }, 1800);
-      // play sound
-      playLoveSound();
+      popLotsOfHeartsAndConfetti();
     });
-
-    // Play the romantic sound, if user allows
-    function playLoveSound() {
-      const audio = document.getElementById("loveSound");
-      if(audio) {
-        audio.currentTime = 0;
-        audio.volume = 0.24;
-        audio.play().catch(()=>{});
-      }
-    }
 
     // Romantic interactive background: mouse-follow radial gradient
     document.addEventListener("mousemove", (e) => {
